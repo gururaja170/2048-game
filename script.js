@@ -1,16 +1,20 @@
 import Cell from './Cell.js';
 import Grid from './Grid.js';
 import Tile from './Tile.js';
+import Touch from './Touch.js';
+import { keyboardPanel, touchPanel } from './config.js';
+
 const gameboard = document.getElementById('game-board');
 const scoreDisplay = document.getElementById('score');
 
 const grid = new Grid(gameboard);
+const touchControls = new Touch();
+const isTouchDevice = touchControls.isTouchDevice;
 
 // Creating 2 random tiles
 grid.randomEmptyCell().tile = new Tile(gameboard);
 grid.randomEmptyCell().tile = new Tile(gameboard);
 
-// intialising input handler
 setupInput();
 
 /**
@@ -18,7 +22,12 @@ setupInput();
  * @returns {void}
  */
 function setupInput() {
+  // For Desktop
   window.addEventListener('keydown', handleInput, { once: true });
+
+  // For Mobile
+  touchControls.setupTouch();
+  window.addEventListener('swipe', handleInput, { once: true });
 }
 
 /**
@@ -27,30 +36,37 @@ function setupInput() {
  * @returns {Void}
  */
 async function handleInput(e) {
+  let switchParam = e.key;
+  let switchPanel = keyboardPanel;
+
+  if (isTouchDevice) {
+    switchParam = e.detail.direction;
+    switchPanel = touchPanel;
+  }
   // Move the tiles around
-  switch (e.key) {
-    case 'ArrowUp':
+  switch (switchParam) {
+    case switchPanel['up']:
       if (!canMoveUp()) {
         setupInput();
         return;
       }
       await moveUp();
       break;
-    case 'ArrowDown':
+    case switchPanel['down']:
       if (!canMoveDown()) {
         setupInput();
         return;
       }
       await moveDown();
       break;
-    case 'ArrowLeft':
+    case switchPanel['left']:
       if (!canMoveLeft()) {
         setupInput();
         return;
       }
       await moveLeft();
       break;
-    case 'ArrowRight':
+    case switchPanel['right']:
       if (!canMoveRight()) {
         setupInput();
         return;
