@@ -1,0 +1,104 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100vh;
+  width: min-content;
+  margin: 0 auto;
+  user-select: none;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  color: rgb(176, 173, 173);
+  align-items: center;
+  width: 100%;
+  border-bottom: 2px solid rgb(178, 174, 174);
+  margin-bottom: 2vmin;
+  padding-bottom: 0.5vmin;
+}
+
+.game-header .name {
+  font-weight: bold;
+  font-size: 3vmin;
+}
+
+.game-header .title {
+  font-weight: bold;
+  font-size: 4vmin;
+}
+
+.score-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-container .score-label {
+  font-size: 2.5vmin;
+}
+
+.score-container .score {
+  font-size: 3vmin;
+  font-weight: bold;
+}
+
+#game-board {
+  display: grid;
+  background-color: #ccc;
+  grid-template-columns: repeat(var(--grid-size), var(--cell-size));
+  grid-template-rows: repeat(var(--grid-size), var(--cell-size));
+  gap: var(--cell-gap);
+  position: relative;
+  padding: var(--cell-gap);
+  border-radius: 1vmin;
+  font-size: calc(var(--cell-size) / 3.5);
+}
+
+.cell {
+  background-color: #aaa;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border-radius: 1vmin;
+}
+
+.tile {
+  position: absolute;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1vmin;
+  font-weight: bold;
+  top: calc(
+    var(--row) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap)
+  );
+  left: calc(
+    var(--col) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap)
+  );
+  background-color: hsl(400, 80%, var(--background-lightness));
+  color: hsl(400, 20%, var(--text-lightness));
+  animation: show 200ms ease-in-out;
+  transition: 100ms ease-in-out;
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
